@@ -16,7 +16,7 @@ interface StatsResponse {
   visits: {
     value: number;
   };
-  totaltime: {
+  visitors: {
     value: number;
   };
 }
@@ -24,13 +24,13 @@ interface StatsResponse {
 export default function UmamiStats() {
   const [pageviews, setPageviews] = useState<number | null>(null);
   const [visits, setVisits] = useState<number | null>(null);
-  const [totaltime, setTotaltime] = useState<number | null>(null);
+  const [visitors, setVisitors] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
   // 定义标签文本
-  const visitorsLabel = "访问次数";
+  const visitsLabel = "访问次数";
   const viewsLabel = "　浏览量";  // 添加全角空格使"浏"字与"统"字对齐
-  const timeLabel = "耗费时间";
+  const visitorsLabel = "　访客";  // 添加全角空格保持对齐
 
   // Umami API信息
   const apiUrl = "https://static.ets2la.cn";
@@ -75,7 +75,7 @@ export default function UmamiStats() {
         }
         
         // 2. 构建统计数据请求URL
-        const startAt = '1753333200000'; // 固定的起始时间
+        const startAt = '1733333200000'; // 固定的起始时间
         const endAt = Date.now().toString(); // 当前时间戳
         const unit = 'hour';
         const timezone = 'Asia/Shanghai';
@@ -108,9 +108,9 @@ export default function UmamiStats() {
           setPageviews(statsData.pageviews.value);
           setVisits(statsData.visits.value);
           
-          // 处理totaltime数据
-          if (statsData.totaltime) {
-            setTotaltime(statsData.totaltime.value);
+          // 处理visitors数据
+          if (statsData.visitors) {
+            setVisitors(statsData.visitors.value);
           }
         }
         
@@ -128,8 +128,8 @@ export default function UmamiStats() {
     <div className="text-sm text-muted-foreground">
       <div className="flex items-center gap-4" suppressHydrationWarning>
         <span id="umami-pageviews" suppressHydrationWarning>{viewsLabel}：{loading ? "加载中..." : (pageviews !== null ? pageviews : "-")}</span>
-        <span id="umami-visits" suppressHydrationWarning>{visitorsLabel}：{loading ? "加载中..." : (visits !== null ? visits : "-")}</span>
-        <span id="umami-totaltime" suppressHydrationWarning>{timeLabel}：{loading ? "加载中..." : (totaltime !== null ? `${totaltime}毫秒` : "-")}</span>
+        <span id="umami-visits" suppressHydrationWarning>{visitsLabel}：{loading ? "加载中..." : (visits !== null ? visits : "-")}</span>
+        <span id="umami-visitors" suppressHydrationWarning>{visitorsLabel}：{loading ? "加载中..." : (visitors !== null ? visitors : "-")}</span>
       </div>
     </div>
   );
